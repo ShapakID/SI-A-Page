@@ -1,0 +1,44 @@
+# Next.js build output
+.next/
+out/
+build/
+dist/
+
+# Dependencies
+node_modules/
+
+# Environment files - NEVER COMMIT
+.env
+.env*.local
+.env.development
+.env.test
+.env.production
+!.env.example
+
+# Local SQLite databases
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# Superpowers scratch
+.superpowers/
+
+# Editor directories
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Legacy prototype
+server.py
+run.bat
+__pycache__/
+sia.db
+
+# OS files
+.DS_Store
+Thumbs.db
