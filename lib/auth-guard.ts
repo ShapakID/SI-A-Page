@@ -1,6 +1,6 @@
 export function isEmailWhitelisted(
   email: string | null | undefined,
-  whitelistCsv: string | undefined
+  whitelistCsv: string | undefined = process.env.ADMIN_EMAILS
 ): boolean {
   if (!email || !whitelistCsv) {
     return false;
