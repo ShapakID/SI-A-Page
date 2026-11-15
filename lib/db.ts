@@ -1,5 +1,4 @@
 import { createClient, type Client } from '@libsql/client';
-import { seedDefaultData } from './seed.ts';
 
 let globalClient: Client | null = null;
 
@@ -83,10 +82,5 @@ export async function initDb(client?: Client, options?: { seed?: boolean }): Pro
 
   for (const sql of statements) {
     await db.execute(sql);
-  }
-
-  const shouldSeed = options?.seed ?? (process.env.NODE_ENV !== 'test');
-  if (shouldSeed) {
-    await seedDefaultData(db);
   }
 }

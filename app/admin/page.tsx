@@ -2,9 +2,11 @@ import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 import { authOptions } from '@/auth';
 import { isEmailWhitelisted } from '@/lib/auth-guard';
+import { getSemesterNumber } from '@/lib/ui-helpers';
 import { getDbClient, initDb } from '@/lib/db';
 import type { Schedule, ScheduleOverride, Task, Material } from '@/lib/types';
 import Link from 'next/link';
+import { AdminCourseManager } from '@/components/admin/AdminCourseManager';
 import { AdminScheduleManager } from '@/components/admin/AdminScheduleManager';
 import { AdminTaskManager } from '@/components/admin/AdminTaskManager';
 import { AdminMaterialManager } from '@/components/admin/AdminMaterialManager';
@@ -31,6 +33,10 @@ export default async function AdminDashboardPage() {
 
   const materialsRes = await db.execute('SELECT * FROM materials ORDER BY semester DESC, id DESC');
   const materials = materialsRes.rows as unknown as Material[];
+
+  const angkatan = Number(process.env.NEXT_PUBLIC_ANGKATAN || 2025);
+  const activeSemester = getSemesterNumber(new Date(), angkatan);
+  const subjects = Array.from(new Set(schedules.map((s) => s.subject))).sort();
 
   return (
     <div className="min-h-screen bg-canvas pb-20">
@@ -76,11 +82,25 @@ export default async function AdminDashboardPage() {
           </p>
         </div>
 
-        {/* 1. Schedule Override */}
+        {/* 1. Master Mata Kuliah (harus pertama, jadi sumber subject untuk tugas & override) */}
         <section className="space-y-4">
           <div className="border-b border-hairline pb-2">
             <h2 className="text-sm font-semibold text-ink uppercase tracking-wider">
-              1. Konfirmasi Jadwal H-1 (Perubahan / Dosen Berhalangan)
+              1. Mata Kuliah & Jadwal Mingguan
+            </h2>
+          </div>
+          <AdminCourseManager
+            schedules={schedules}
+            adminEmail={session.user.email}
+            activeSemester={activeSemester}
+          />
+        </section>
+
+        {/* 2. Schedule Override */}
+        <section className="space-y-4">
+          <div className="border-b border-hairline pb-2">
+            <h2 className="text-sm font-semibold text-ink uppercase tracking-wider">
+              2. Konfirmasi Jadwal H-1 (Perubahan / Dosen Berhalangan)
             </h2>
           </div>
           <AdminScheduleManager
@@ -90,21 +110,25 @@ export default async function AdminDashboardPage() {
           />
         </section>
 
-        {/* 2. Tasks */}
+        {/* 3. Tasks */}
         <section className="space-y-4">
           <div className="border-b border-hairline pb-2">
             <h2 className="text-sm font-semibold text-ink uppercase tracking-wider">
-              2. Manajemen Tugas & Project
+              3. Manajemen Tugas & Project
             </h2>
           </div>
-          <AdminTaskManager tasks={tasks} adminEmail={session.user.email} />
+          <AdminTaskManager
+            tasks={tasks}
+            adminEmail={session.user.email}
+            subjects={subjects}
+          />
         </section>
 
-        {/* 3. Materials */}
+        {/* 4. Materials */}
         <section className="space-y-4">
           <div className="border-b border-hairline pb-2">
             <h2 className="text-sm font-semibold text-ink uppercase tracking-wider">
-              3. Berkas Materi & Arsip Google Drive
+              4. Berkas Materi & Arsip Google Drive
             </h2>
           </div>
           <AdminMaterialManager materials={materials} adminEmail={session.user.email} />

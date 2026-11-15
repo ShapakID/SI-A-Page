@@ -1,6 +1,7 @@
+import Link from 'next/link';
 import { getDbClient, initDb } from '@/lib/db';
 import { mergeSchedulesWithOverrides } from '@/lib/schedule-merger';
-import { getDayOfWeek, formatIndonesianDate } from '@/lib/ui-helpers';
+import { getDayOfWeek, formatIndonesianDate, getAcademicYear, getSemesterNumber } from '@/lib/ui-helpers';
 import type { Schedule, ScheduleOverride, Task, Material } from '@/lib/types';
 import { Header } from '@/components/Header';
 import { TodaySchedule } from '@/components/TodaySchedule';
@@ -34,7 +35,9 @@ export default async function HomePage() {
   const dayOfWeek = getDayOfWeek(now);
   const formattedToday = formatIndonesianDate(dateStr);
 
-  const activeSemester = Number(process.env.NEXT_PUBLIC_ACTIVE_SEMESTER || 3);
+  const angkatan = Number(process.env.NEXT_PUBLIC_ANGKATAN || 2025);
+  const activeSemester = getSemesterNumber(now, angkatan);
+  const academicYear = getAcademicYear(now);
 
   // 1. Fetch weekly master schedules
   const masterRes = await db.execute({
@@ -75,7 +78,7 @@ export default async function HomePage() {
             <div>
               <h1 className="text-xl font-bold tracking-tight text-ink">Sistem Informasi A</h1>
               <p className="text-xs text-ink-muted mt-0.5">
-                Universitas Tadulako • Semester {activeSemester} (2024/2025)
+                Universitas Tadulako • Angkatan {angkatan} • Semester {activeSemester} ({academicYear})
               </p>
             </div>
             <div className="text-right">
@@ -85,6 +88,17 @@ export default async function HomePage() {
             </div>
           </div>
         </section>
+
+        {/* Belum ada data: jangan tampilkan data karangan, arahkan ke admin */}
+        {allMasterSchedules.length === 0 && (
+          <div className="border border-hairline rounded-lg bg-canvas-subtle p-4 text-xs text-ink-muted">
+            Belum ada jadwal mata kuliah yang diinput. Portal menunggu data resmi dari pengurus kelas.
+            <Link href="/admin" className="ml-1 underline hover:text-ink">
+              Login admin
+            </Link>
+            .
+          </div>
+        )}
 
         {/* Section 1: Jadwal Hari Ini */}
         <TodaySchedule

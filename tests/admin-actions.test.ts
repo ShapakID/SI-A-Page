@@ -22,7 +22,7 @@ const unauthorizedSession = {
 test('admin actions: reject unauthorized callers', async () => {
   process.env.ADMIN_EMAILS = 'shapak@gmail.com';
   const db = getDbClient('file::memory:');
-  await initDb(db, { seed: false });
+  await initDb(db);
 
   await assert.rejects(
     () =>
@@ -79,7 +79,7 @@ test('admin actions: reject unauthorized callers', async () => {
 test('admin actions: authorized admin can perform mutations', async () => {
   process.env.ADMIN_EMAILS = 'shapak@gmail.com';
   const db = getDbClient('file::memory:');
-  await initDb(db, { seed: false });
+  await initDb(db);
 
   // Insert base schedule
   await db.execute({

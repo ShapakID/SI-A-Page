@@ -92,6 +92,25 @@ export function getStatusBadge(status: ScheduleStatus): {
   }
 }
 
+/**
+ * Tahun akademik berjalan. Ganjil: Sep-Jan -> 2026/2027. Genap: Feb-Agu -> 2025/2026.
+ * ponytail: patokan bulan, bukan kalender akademik resmi kampus.
+ */
+export function getAcademicYear(date: Date): string {
+  const month = date.getMonth(); // 0 = Jan, 8 = Sep
+  const year = date.getFullYear();
+  return month >= 8 || month === 0 ? `${year}/${year + 1}` : `${year - 1}/${year}`;
+}
+
+/** Semester ke-N sejak angkatan. Ganjil = 1,3,5... Genap = 2,4,6... */
+export function getSemesterNumber(date: Date, angkatan: number): number {
+  const month = date.getMonth();
+  const academicStart = month >= 8 || month === 0 ? (month === 0 ? date.getFullYear() - 1 : date.getFullYear()) : date.getFullYear() - 1;
+  const yearsIn = academicStart - angkatan;
+  const isOdd = month >= 8 || month === 0;
+  return yearsIn * 2 + (isOdd ? 1 : 2);
+}
+
 export function filterMaterials(
   materials: Material[],
   semester?: number,

@@ -4,7 +4,7 @@ import { getDbClient, initDb } from '../lib/db.ts';
 
 test('db: can initialize tables and perform CRUD operations', async () => {
   const db = getDbClient('file::memory:');
-  await initDb(db, { seed: false });
+  await initDb(db);
 
   // Insert master schedule
   const insertMaster = await db.execute({

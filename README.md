@@ -48,7 +48,7 @@ Untuk deployment di Vercel atau lokal, siapkan environment variable berikut:
 | `GOOGLE_CLIENT_ID` | OAuth Client ID dari Google Cloud Console | `xxxx.apps.googleusercontent.com` |
 | `GOOGLE_CLIENT_SECRET` | OAuth Client Secret Google | `GOCSPX-xxxx` |
 | `ADMIN_EMAILS` | Daftar email Google admin/PJ (pisahkan dengan koma) | `shapak@gmail.com,pj1@gmail.com` |
-| `NEXT_PUBLIC_ACTIVE_SEMESTER` | Nomor semester aktif saat ini | `3` |
+| `NEXT_PUBLIC_ANGKATAN` | Tahun angkatan mahasiswa. Semester & tahun akademik dihitung otomatis | `2025` |
 
 ---
 

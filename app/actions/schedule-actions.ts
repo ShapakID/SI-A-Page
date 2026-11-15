@@ -70,3 +70,52 @@ export async function deleteScheduleOverride(
 
   return { success: true };
 }
+
+export interface MasterScheduleInput {
+  day_of_week: number;
+  subject: string;
+  lecturer: string;
+  start_time: string;
+  end_time: string;
+  room: string;
+  semester: number;
+}
+
+export async function createSchedule(
+  data: MasterScheduleInput,
+  session?: any,
+  dbOverride?: Client
+) {
+  assertAdminSession(session);
+  const db = dbOverride || getDbClient();
+
+  await db.execute({
+    sql: `INSERT INTO schedules (day_of_week, subject, lecturer, start_time, end_time, room, semester)
+          VALUES (?, ?, ?, ?, ?, ?, ?)`,
+    args: [
+      data.day_of_week,
+      data.subject.trim(),
+      data.lecturer.trim(),
+      data.start_time,
+      data.end_time,
+      data.room.trim(),
+      data.semester,
+    ],
+  });
+
+  return { success: true };
+}
+
+export async function deleteSchedule(
+  id: number,
+  session?: any,
+  dbOverride?: Client
+) {
+  assertAdminSession(session);
+  const db = dbOverride || getDbClient();
+
+  await db.execute({ sql: 'DELETE FROM schedule_overrides WHERE schedule_id = ?', args: [id] });
+  await db.execute({ sql: 'DELETE FROM schedules WHERE id = ?', args: [id] });
+
+  return { success: true };
+}

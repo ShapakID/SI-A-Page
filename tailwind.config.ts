@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  darkMode: "class",
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -10,23 +11,37 @@ const config: Config = {
     extend: {
       colors: {
         ink: {
-          DEFAULT: "#111111",
-          muted: "#666666",
-          subtle: "#888888",
+          DEFAULT: "var(--ink)",
+          muted: "var(--ink-muted)",
+          subtle: "var(--ink-subtle)",
         },
         canvas: {
-          DEFAULT: "#ffffff",
-          subtle: "#f8f9fa",
-          muted: "#f1f3f5",
+          DEFAULT: "var(--canvas)",
+          subtle: "var(--canvas-subtle)",
+          muted: "var(--canvas-muted)",
         },
         hairline: {
-          DEFAULT: "#e5e7eb",
-          subtle: "#f0f2f5",
-          emphasis: "#d1d5db",
+          DEFAULT: "var(--hairline)",
+          subtle: "var(--hairline-subtle)",
+          emphasis: "var(--hairline-emphasis)",
         },
         brand: {
-          DEFAULT: "#111111",
+          DEFAULT: "var(--ink)",
         },
+        // Neutral scale via CSS vars: every neutral utility flips automatically in dark mode
+        neutral: {
+          50: "var(--n-50)",
+          100: "var(--n-100)",
+          200: "var(--n-200)",
+          300: "var(--n-300)",
+          400: "var(--n-400)",
+          500: "var(--n-500)",
+          600: "var(--n-600)",
+          700: "var(--n-700)",
+          800: "var(--n-800)",
+          900: "var(--n-900)",
+        },
+        white: "var(--white)",
       },
       borderRadius: {
         sm: "4px",

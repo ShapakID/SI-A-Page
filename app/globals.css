@@ -3,13 +3,56 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #111111;
+  --canvas: #ffffff;
+  --canvas-subtle: #f8f9fa;
+  --canvas-muted: #f1f3f5;
+  --ink: #111111;
+  --ink-muted: #666666;
+  --ink-subtle: #888888;
+  --hairline: #e5e7eb;
+  --hairline-subtle: #f0f2f5;
+  --hairline-emphasis: #d1d5db;
+  --white: #ffffff;
+
+  --n-50: #fafafa;
+  --n-100: #f5f5f5;
+  --n-200: #e5e5e5;
+  --n-300: #d4d4d4;
+  --n-400: #a3a3a3;
+  --n-500: #737373;
+  --n-600: #525252;
+  --n-700: #404040;
+  --n-800: #262626;
+  --n-900: #171717;
+}
+
+.dark {
+  --canvas: #0b0b0c;
+  --canvas-subtle: #141416;
+  --canvas-muted: #1b1b1e;
+  --ink: #ededed;
+  --ink-muted: #9a9a9f;
+  --ink-subtle: #77777c;
+  --hairline: #26262a;
+  --hairline-subtle: #1e1e21;
+  --hairline-emphasis: #35353a;
+  --white: #0b0b0c;
+
+  --n-50: #1b1b1e;
+  --n-100: #212125;
+  --n-200: #2a2a2f;
+  --n-300: #3a3a40;
+  --n-400: #6b6b73;
+  --n-500: #8e8e96;
+  --n-600: #a9a9b0;
+  --n-700: #c4c4ca;
+  --n-800: #dedee2;
+  --n-900: #f2f2f4;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
+  color: var(--ink);
+  background: var(--canvas);
   font-feature-settings: "cv02", "cv03", "cv04", "cv11", "tnum";
   -webkit-font-smoothing: antialiased;
 }
@@ -17,4 +60,32 @@ body {
 /* Tabular figures for time display */
 .tabular-nums {
   font-variant-numeric: tabular-nums;
+}
+
+/* Accent tints need explicit dark counterparts (neutral scale is already var-driven) */
+.dark .bg-sky-50 { background-color: #0c2431; }
+.dark .border-sky-200 { border-color: #16394d; }
+.dark .text-sky-800 { color: #7dd3fc; }
+
+.dark .bg-amber-50 { background-color: #2a2110; }
+.dark .border-amber-200 { border-color: #43351a; }
+.dark .text-amber-800,
+.dark .text-amber-700 { color: #fcd34d; }
+
+.dark .bg-rose-50 { background-color: #2c1113; }
+.dark .border-rose-200 { border-color: #45191d; }
+.dark .text-rose-800 { color: #fda4af; }
+
+.dark .bg-red-50 { background-color: #2c1113; }
+.dark .text-red-600 { color: #f87171; }
+.dark .text-red-700 { color: #fca5a5; }
+
+.dark .text-emerald-600 { color: #34d399; }
+
+/* Native form controls follow the theme */
+input, select, textarea {
+  color-scheme: light;
+}
+.dark input, .dark select, .dark textarea {
+  color-scheme: dark;
 }

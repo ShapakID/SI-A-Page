@@ -9,9 +9,10 @@ import { Trash2 } from 'lucide-react';
 interface AdminTaskManagerProps {
   tasks: Task[];
   adminEmail: string;
+  subjects: string[];
 }
 
-export function AdminTaskManager({ tasks, adminEmail }: AdminTaskManagerProps) {
+export function AdminTaskManager({ tasks, adminEmail, subjects }: AdminTaskManagerProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -87,14 +88,22 @@ export function AdminTaskManager({ tasks, adminEmail }: AdminTaskManagerProps) {
 
             <div>
               <label className="block text-ink-muted mb-1 font-medium">Mata Kuliah</label>
-              <input
-                type="text"
+              <select
                 required
-                placeholder="misal: Rekayasa Perangkat Lunak"
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
-                className="w-full bg-canvas border border-hairline rounded-md px-3 py-2 text-ink"
-              />
+                disabled={subjects.length === 0}
+                className="w-full bg-canvas border border-hairline rounded-md px-3 py-2 text-ink disabled:opacity-60"
+              >
+                <option value="">
+                  {subjects.length === 0 ? 'Belum ada mata kuliah' : 'Pilih mata kuliah'}
+                </option>
+                {subjects.map((s) => (
+                  <option key={s} value={s}>
+                    {s}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
 

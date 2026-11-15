@@ -6,6 +6,8 @@ import {
   getCategoryBadge,
   getStatusBadge,
   filterMaterials,
+  getAcademicYear,
+  getSemesterNumber,
 } from '../lib/ui-helpers.ts';
 import type { Material } from '../lib/types.ts';
 
@@ -46,6 +48,20 @@ test('getCategoryBadge & getStatusBadge: returns anti-slop neutral tokens', () =
 
   const cancelledBadge = getStatusBadge('cancelled');
   assert.strictEqual(cancelledBadge.label, 'Ditiadakan');
+});
+
+test('academic calendar: angkatan 2025 in Nov 2026 is semester 3, TA 2026/2027', () => {
+  const nov2026 = new Date('2026-11-15T10:00:00+08:00');
+  assert.strictEqual(getAcademicYear(nov2026), '2026/2027');
+  assert.strictEqual(getSemesterNumber(nov2026, 2025), 3);
+
+  const apr2027 = new Date('2027-04-10T10:00:00+08:00');
+  assert.strictEqual(getAcademicYear(apr2027), '2026/2027');
+  assert.strictEqual(getSemesterNumber(apr2027, 2025), 4);
+
+  const sep2027 = new Date('2027-09-05T10:00:00+08:00');
+  assert.strictEqual(getAcademicYear(sep2027), '2027/2028');
+  assert.strictEqual(getSemesterNumber(sep2027, 2025), 5);
 });
 
 test('filterMaterials: filters by semester and subject query correctly', () => {
