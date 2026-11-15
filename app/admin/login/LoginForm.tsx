@@ -35,68 +35,85 @@ export function LoginForm() {
   };
 
   return (
-    <div className="w-full max-w-sm">
-      <Link
-        href="/"
-        className="inline-flex items-center gap-1.5 text-xs text-ink-muted hover:text-ink mb-6 transition-colors"
-      >
-        <ArrowLeft className="w-3.5 h-3.5" />
-        <span>Kembali ke Beranda</span>
-      </Link>
+    <div className="w-full max-w-[480px]">
+      <div className="text-center mb-8">
+        <Link
+          href="/"
+          className="inline-flex items-center gap-2 text-sm font-medium text-ink-muted hover:text-primary transition-colors group"
+        >
+          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+          <span>Kembali ke Beranda</span>
+        </Link>
+      </div>
 
-      <div className="bg-canvas border border-hairline rounded-xl p-6 shadow-subtle space-y-6">
-        <div className="space-y-1">
-          <div className="inline-flex p-2 rounded-lg bg-neutral-100 dark:bg-neutral-800 border border-hairline mb-2">
-            <ShieldCheck className="w-5 h-5 text-ink" />
+      <div className="bg-canvas border border-hairline rounded-3xl p-8 sm:p-12 shadow-2xl shadow-neutral-200/50 dark:shadow-none space-y-8 relative overflow-hidden">
+        {/* Glow effect */}
+        <div className="absolute -top-24 -right-24 w-48 h-48 bg-primary/5 rounded-full blur-3xl" />
+        
+        <div className="space-y-3 relative">
+          <div className="inline-flex p-3 rounded-2xl bg-primary/10 border border-primary/20 mb-2">
+            <ShieldCheck className="w-6 h-6 text-primary" />
           </div>
-          <h1 className="text-lg font-semibold text-ink">Admin Portal SI-A</h1>
-          <p className="text-xs text-ink-muted">
-            Khusus pengurus kelas (PJ / Komti). Masuk wajib menggunakan akun Google terdaftar.
+          <h1 className="text-2xl font-bold tracking-tight text-ink">Selamat Datang, Admin</h1>
+          <p className="text-sm text-ink-muted leading-relaxed">
+            Kelola jadwal, tugas, dan materi SI-A Angkatan 2025 dalam satu dashboard terintegrasi.
           </p>
         </div>
 
         {errorMessage && (
-          <div className="p-3 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900 rounded-lg flex items-start gap-2.5 text-xs text-red-700 dark:text-red-400">
-            <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
-            <span className="leading-relaxed">{errorMessage}</span>
+          <div className="p-4 bg-red-50 dark:bg-red-950/20 border border-red-100 dark:border-red-900/50 rounded-2xl flex items-start gap-3 text-sm text-red-600 dark:text-red-400 animate-in fade-in slide-in-from-top-1">
+            <AlertCircle className="w-5 h-5 shrink-0" />
+            <span className="font-medium">{errorMessage}</span>
           </div>
         )}
 
-        <div className="pt-2">
+        <div className="pt-2 relative">
           <button
             type="button"
             onClick={handleGoogleLogin}
             disabled={loadingGoogle}
-            className="w-full py-3 px-4 bg-ink text-canvas hover:bg-neutral-800 disabled:opacity-50 text-xs font-semibold rounded-lg transition-colors flex items-center justify-center gap-2.5"
+            className="w-full py-4 px-6 bg-ink text-canvas hover:bg-neutral-800 dark:hover:bg-neutral-200 dark:text-neutral-900 disabled:opacity-50 text-sm font-bold rounded-2xl shadow-lg transition-all active:scale-[0.98] flex items-center justify-center gap-3"
           >
-            <svg className="w-4 h-4" viewBox="0 0 24 24">
-              <path
-                fill="currentColor"
-                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-              />
-              <path
-                fill="currentColor"
-                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-              />
-              <path
-                fill="currentColor"
-                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
-              />
-              <path
-                fill="currentColor"
-                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
-              />
-            </svg>
-            <span>{loadingGoogle ? 'Menghubungkan...' : 'Masuk dengan Google'}</span>
+            {loadingGoogle ? (
+              <span className="animate-pulse">Menghubungkan...</span>
+            ) : (
+              <>
+                <div className="bg-canvas p-1 rounded-md">
+                  <svg className="w-4 h-4" viewBox="0 0 24 24">
+                    <path
+                      fill="#4285F4"
+                      d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                    />
+                    <path
+                      fill="#34A853"
+                      d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                    />
+                    <path
+                      fill="#FBBC05"
+                      d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
+                    />
+                    <path
+                      fill="#EA4335"
+                      d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
+                    />
+                  </svg>
+                </div>
+                <span>Masuk dengan Google</span>
+              </>
+            )}
           </button>
         </div>
 
-        <div className="pt-2 border-t border-hairline text-center">
-          <span className="text-[10px] text-ink-muted uppercase tracking-widest font-mono">
-            Security Hardened
-          </span>
+        <div className="pt-6 border-t border-hairline text-center">
+          <p className="text-[11px] text-ink-muted uppercase tracking-[0.2em] font-bold">
+            Portal Keamanan Enkripsi
+          </p>
         </div>
       </div>
+
+      <p className="mt-8 text-center text-xs text-ink-muted leading-relaxed max-w-xs mx-auto">
+        Dengan masuk, Anda menyetujui bahwa data yang diinput akan dipublikasikan ke seluruh mahasiswa SI-A.
+      </p>
     </div>
   );
 }
