@@ -1,3 +1,10 @@
+export const DEFAULT_ADMIN_EMAILS = [
+  'shapakid@gmail.com',
+  'shafairunizarne@gmail.com',
+  'zalfafya@gmail.com',
+  'awaasalwa07@gmail.com',
+].join(',');
+
 export function isEmailWhitelisted(
   email: string | null | undefined,
   whitelistCsv: string | undefined = process.env.ADMIN_EMAILS
@@ -35,7 +42,7 @@ export function assertAdminSession(session: any): AdminUser {
   }
 
   const email = rawEmail.trim().toLowerCase();
-  const whitelist = process.env.ADMIN_EMAILS || 'shapakid@gmail.com,zalfafya@gmail.com,awaasalwa07@gmail.com';
+  const whitelist = process.env.ADMIN_EMAILS || DEFAULT_ADMIN_EMAILS;
 
   if (!isEmailWhitelisted(email, whitelist)) {
     throw new Error(`Unauthorized: Email ${email} not whitelisted`);

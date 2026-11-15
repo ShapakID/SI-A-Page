@@ -1,7 +1,7 @@
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 import { authOptions } from '@/auth';
-import { isEmailWhitelisted } from '@/lib/auth-guard';
+import { isEmailWhitelisted, DEFAULT_ADMIN_EMAILS } from '@/lib/auth-guard';
 import { getSemesterNumber } from '@/lib/ui-helpers';
 import { getDbClient, initDb } from '@/lib/db';
 import type { Schedule, ScheduleOverride, Task, Material } from '@/lib/types';
@@ -23,7 +23,7 @@ export default async function AdminDashboardPage() {
     redirect('/admin/login');
   }
 
-  const adminWhitelist = process.env.ADMIN_EMAILS || 'shapakid@gmail.com,zalfafya@gmail.com,awaasalwa07@gmail.com';
+  const adminWhitelist = process.env.ADMIN_EMAILS || DEFAULT_ADMIN_EMAILS;
   if (!session?.user?.email || !isEmailWhitelisted(session.user.email, adminWhitelist)) {
     redirect('/admin/login');
   }
