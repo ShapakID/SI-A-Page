@@ -12,8 +12,17 @@ import { AdminTaskManager } from '@/components/admin/AdminTaskManager';
 import { AdminMaterialManager } from '@/components/admin/AdminMaterialManager';
 import { ArrowLeft, ShieldCheck, LogOut } from 'lucide-react';
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminDashboardPage() {
-  const session = await getServerSession(authOptions);
+  let session = null;
+  try {
+    session = await getServerSession(authOptions);
+  } catch (error) {
+    // Konfigurasi NextAuth rusak (mis. NEXTAUTH_SECRET kosong) tidak boleh bikin 500
+    console.error('[admin] getServerSession failed:', error);
+    redirect('/admin/login?error=config');
+  }
 
   if (!session?.user?.email || !isEmailWhitelisted(session.user.email)) {
     redirect('/admin/login');
