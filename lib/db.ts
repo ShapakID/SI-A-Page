@@ -13,9 +13,8 @@ export function getDbClient(overrideUrl?: string): Client {
     return globalClient;
   }
 
-  const defaultUrl = process.env.VERCEL ? 'file:/tmp/local.db' : 'file:local.db';
+  const defaultUrl = 'file:local.db';
   const url = process.env.TURSO_DATABASE_URL || defaultUrl;
-  const authToken = process.env.TURSO_AUTH_TOKEN;
 
   globalClient = createClient({
     url,
