@@ -8,7 +8,7 @@ import { TodaySchedule } from '@/components/TodaySchedule';
 import { WeeklySchedule } from '@/components/WeeklySchedule';
 import { TaskList } from '@/components/TaskList';
 import { MaterialArchive } from '@/components/MaterialArchive';
-import { Sparkles, Calendar, BookOpen } from 'lucide-react';
+import { Sparkles, Calendar, BookOpen, ShieldCheck, ArrowRight, CheckCircle2 } from 'lucide-react';
 
 export const revalidate = 60; // Revalidate at most every 60s
 
@@ -69,63 +69,76 @@ export default async function HomePage() {
   const allMaterials = materialsRes.rows as unknown as Material[];
 
   return (
-    <div className="min-h-screen bg-canvas pb-24">
+    <div className="min-h-screen bg-canvas text-ink pb-24 selection:bg-neutral-900 selection:text-white">
       <Header />
 
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 pt-8 space-y-12">
-        {/* Saasly Hero Banner */}
-        <section className="bg-neutral-900 text-white dark:bg-neutral-900/90 rounded-3xl p-8 sm:p-10 shadow-2xl relative overflow-hidden">
-          <div className="absolute top-0 right-0 -mt-12 -mr-12 w-64 h-64 bg-white/5 rounded-full blur-3xl pointer-events-none" />
-          
-          <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div className="space-y-3">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-white text-xs font-medium tracking-wide">
-                <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                <span>Portal Resmi Angkatan {angkatan}</span>
-              </div>
-              <h1 className="text-3xl font-extrabold tracking-tight">Sistem Informasi A</h1>
-              <p className="text-xs sm:text-sm text-neutral-400 max-w-md leading-relaxed">
-                Universitas Tadulako • Semester {activeSemester} ({academicYear})
-              </p>
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 pt-12 space-y-16">
+        {/* Saasly Hero Section */}
+        <section className="text-center space-y-8 pt-6 pb-12">
+          {/* Rating Pill with Avatars */}
+          <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-neutral-100 dark:bg-neutral-800/80 border border-hairline shadow-sm mx-auto">
+            <div className="flex -space-x-2">
+              <div className="w-6 h-6 rounded-full bg-neutral-300 dark:bg-neutral-700 border-2 border-canvas flex items-center text-[10px] font-bold justify-center">A</div>
+              <div className="w-6 h-6 rounded-full bg-neutral-400 dark:bg-neutral-600 border-2 border-canvas flex items-center text-[10px] font-bold justify-center">S</div>
+              <div className="w-6 h-6 rounded-full bg-neutral-500 dark:bg-neutral-500 border-2 border-canvas flex items-center text-[10px] font-bold justify-center">F</div>
             </div>
+            <span className="text-xs font-semibold text-ink">
+              Portal Resmi Angkatan {angkatan} • Universitas Tadulako
+            </span>
+          </div>
 
-            <div className="flex flex-row md:flex-col items-start md:items-end gap-3 shrink-0">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono bg-white/10 text-neutral-200 border border-white/10">
-                <Calendar className="w-3.5 h-3.5" />
-                <span>WITA (UTC+8)</span>
-              </span>
-              <span className="text-xs text-neutral-400 font-mono">
-                {formattedToday}
-              </span>
+          {/* Headline */}
+          <div className="space-y-4 max-w-3xl mx-auto">
+            <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight leading-[1.1] text-ink">
+              Pusat Kendali Akademik <span className="text-neutral-400 dark:text-neutral-500">Sistem Informasi A</span>
+            </h1>
+            <p className="text-base sm:text-lg text-ink-muted leading-relaxed max-w-2xl mx-auto">
+              Pantau jadwal kuliah real-time, konfirmasi perubahan H-1, lacak tugas kelompok, dan unduh arsip materi dalam satu platform modern.
+            </p>
+          </div>
+
+          {/* Action CTA Buttons */}
+          <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
+            <Link
+              href="/admin"
+              className="px-6 py-3.5 bg-ink text-canvas hover:bg-neutral-800 dark:hover:bg-neutral-200 dark:text-neutral-900 text-xs font-bold rounded-2xl shadow-xl transition-all flex items-center gap-2 group"
+            >
+              <ShieldCheck className="w-4 h-4" />
+              <span>Login Admin (Komti/PJ)</span>
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
+            <div className="px-6 py-3.5 bg-canvas border border-hairline text-ink text-xs font-bold rounded-2xl shadow-sm flex items-center gap-2">
+              <Calendar className="w-4 h-4 text-ink-muted" />
+              <span>Semester {activeSemester} • {academicYear}</span>
             </div>
           </div>
         </section>
 
         {/* Belum ada data state */}
         {allMasterSchedules.length === 0 && (
-          <div className="border border-hairline rounded-3xl bg-canvas-subtle p-8 text-center space-y-4 shadow-sm">
-            <div className="w-12 h-12 mx-auto rounded-2xl bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center text-ink">
-              <BookOpen className="w-6 h-6" />
+          <div className="border border-hairline rounded-3xl bg-canvas-subtle p-10 text-center space-y-4 shadow-sm max-w-2xl mx-auto">
+            <div className="w-14 h-14 mx-auto rounded-2xl bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center text-ink">
+              <BookOpen className="w-7 h-7" />
             </div>
             <div className="space-y-1">
-              <h3 className="text-sm font-bold text-ink">Belum Ada Jadwal Mata Kuliah</h3>
-              <p className="text-xs text-ink-muted max-w-sm mx-auto">
-                Portal sedang menunggu input data resmi dari pengurus kelas (Komti / PJ).
+              <h3 className="text-base font-bold text-ink">Belum Ada Jadwal Mata Kuliah</h3>
+              <p className="text-xs text-ink-muted max-w-sm mx-auto leading-relaxed">
+                Portal sedang menunggu input data resmi dari pengurus kelas. Silakan login sebagai admin untuk mengisi jadwal.
               </p>
             </div>
             <div>
               <Link
                 href="/admin"
-                className="inline-flex items-center gap-2 px-4 py-2 bg-ink text-canvas text-xs font-bold rounded-xl hover:opacity-95 transition-opacity"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-ink text-canvas text-xs font-bold rounded-xl hover:opacity-95 transition-opacity"
               >
-                <span>Masuk sebagai Admin</span>
+                <span>Masuk ke Panel Admin</span>
               </Link>
             </div>
           </div>
         )}
 
-        {/* Quick Stats / Sections Grid */}
-        <div className="space-y-12">
+        {/* Saasly Dashboard Mockup Container */}
+        <div className="space-y-12 bg-neutral-50/50 dark:bg-neutral-900/40 border border-hairline rounded-[36px] p-6 sm:p-10 shadow-2xl backdrop-blur-sm">
           {/* Section 1: Jadwal Hari Ini */}
           <div className="bg-canvas border border-hairline rounded-3xl p-6 sm:p-8 shadow-xl shadow-neutral-100/50 dark:shadow-none">
             <TodaySchedule
@@ -152,9 +165,9 @@ export default async function HomePage() {
         </div>
       </main>
 
-      <footer className="max-w-4xl mx-auto px-4 mt-20 pt-8 border-t border-hairline text-center text-xs text-ink-muted space-y-2">
-        <p className="font-semibold text-ink">Portal Kelas SI-A • Angkatan 2025</p>
-        <p className="text-[11px]">Dikembangkan untuk efisiensi perkuliahan bersama • Zero AI Slop • LibSQL</p>
+      <footer className="max-w-5xl mx-auto px-4 mt-24 pt-8 border-t border-hairline text-center text-xs text-ink-muted space-y-2">
+        <p className="font-bold text-ink">Portal Kelas SI-A • Angkatan 2025 • Universitas Tadulako</p>
+        <p className="text-[11px] font-mono">Saasly Design Language • Zero AI Slop • LibSQL & Next.js</p>
       </footer>
     </div>
   );
