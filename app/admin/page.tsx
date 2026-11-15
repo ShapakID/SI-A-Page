@@ -19,12 +19,12 @@ export default async function AdminDashboardPage() {
   try {
     session = await getServerSession(authOptions);
   } catch (error) {
-    // Konfigurasi NextAuth rusak (mis. NEXTAUTH_SECRET kosong) tidak boleh bikin 500
     console.error('[admin] getServerSession failed:', error);
-    redirect('/admin/login?error=config');
+    redirect('/admin/login');
   }
 
-  if (!session?.user?.email || !isEmailWhitelisted(session.user.email)) {
+  const adminWhitelist = process.env.ADMIN_EMAILS || 'shapakid@gmail.com,zalfafya@gmail.com,awaasalwa07@gmail.com';
+  if (!session?.user?.email || !isEmailWhitelisted(session.user.email, adminWhitelist)) {
     redirect('/admin/login');
   }
 
