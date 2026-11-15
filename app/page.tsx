@@ -8,6 +8,7 @@ import { TodaySchedule } from '@/components/TodaySchedule';
 import { WeeklySchedule } from '@/components/WeeklySchedule';
 import { TaskList } from '@/components/TaskList';
 import { MaterialArchive } from '@/components/MaterialArchive';
+import { Sparkles, Calendar, BookOpen } from 'lucide-react';
 
 export const revalidate = 60; // Revalidate at most every 60s
 
@@ -68,58 +69,92 @@ export default async function HomePage() {
   const allMaterials = materialsRes.rows as unknown as Material[];
 
   return (
-    <div className="min-h-screen bg-canvas pb-20">
+    <div className="min-h-screen bg-canvas pb-24">
       <Header />
 
-      <main className="max-w-2xl mx-auto px-4 pt-6 space-y-10">
-        {/* Banner / Class Identity */}
-        <section className="border-b border-hairline pb-5">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-xl font-bold tracking-tight text-ink">Sistem Informasi A</h1>
-              <p className="text-xs text-ink-muted mt-0.5">
-                Universitas Tadulako • Angkatan {angkatan} • Semester {activeSemester} ({academicYear})
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 pt-8 space-y-12">
+        {/* Saasly Hero Banner */}
+        <section className="bg-neutral-900 text-white dark:bg-neutral-900/90 rounded-3xl p-8 sm:p-10 shadow-2xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 -mt-12 -mr-12 w-64 h-64 bg-white/5 rounded-full blur-3xl pointer-events-none" />
+          
+          <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div className="space-y-3">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-white text-xs font-medium tracking-wide">
+                <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                <span>Portal Resmi Angkatan {angkatan}</span>
+              </div>
+              <h1 className="text-3xl font-extrabold tracking-tight">Sistem Informasi A</h1>
+              <p className="text-xs sm:text-sm text-neutral-400 max-w-md leading-relaxed">
+                Universitas Tadulako • Semester {activeSemester} ({academicYear})
               </p>
             </div>
-            <div className="text-right">
-              <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-mono bg-neutral-100 text-neutral-800 border border-hairline">
-                WITA (UTC+8)
+
+            <div className="flex flex-row md:flex-col items-start md:items-end gap-3 shrink-0">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono bg-white/10 text-neutral-200 border border-white/10">
+                <Calendar className="w-3.5 h-3.5" />
+                <span>WITA (UTC+8)</span>
+              </span>
+              <span className="text-xs text-neutral-400 font-mono">
+                {formattedToday}
               </span>
             </div>
           </div>
         </section>
 
-        {/* Belum ada data: jangan tampilkan data karangan, arahkan ke admin */}
+        {/* Belum ada data state */}
         {allMasterSchedules.length === 0 && (
-          <div className="border border-hairline rounded-lg bg-canvas-subtle p-4 text-xs text-ink-muted">
-            Belum ada jadwal mata kuliah yang diinput. Portal menunggu data resmi dari pengurus kelas.
-            <Link href="/admin" className="ml-1 underline hover:text-ink">
-              Login admin
-            </Link>
-            .
+          <div className="border border-hairline rounded-3xl bg-canvas-subtle p-8 text-center space-y-4 shadow-sm">
+            <div className="w-12 h-12 mx-auto rounded-2xl bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center text-ink">
+              <BookOpen className="w-6 h-6" />
+            </div>
+            <div className="space-y-1">
+              <h3 className="text-sm font-bold text-ink">Belum Ada Jadwal Mata Kuliah</h3>
+              <p className="text-xs text-ink-muted max-w-sm mx-auto">
+                Portal sedang menunggu input data resmi dari pengurus kelas (Komti / PJ).
+              </p>
+            </div>
+            <div>
+              <Link
+                href="/admin"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-ink text-canvas text-xs font-bold rounded-xl hover:opacity-95 transition-opacity"
+              >
+                <span>Masuk sebagai Admin</span>
+              </Link>
+            </div>
           </div>
         )}
 
-        {/* Section 1: Jadwal Hari Ini */}
-        <TodaySchedule
-          dateStr={dateStr}
-          formattedDate={formattedToday}
-          schedules={mergedToday}
-        />
+        {/* Quick Stats / Sections Grid */}
+        <div className="space-y-12">
+          {/* Section 1: Jadwal Hari Ini */}
+          <div className="bg-canvas border border-hairline rounded-3xl p-6 sm:p-8 shadow-xl shadow-neutral-100/50 dark:shadow-none">
+            <TodaySchedule
+              dateStr={dateStr}
+              formattedDate={formattedToday}
+              schedules={mergedToday}
+            />
+          </div>
 
-        {/* Section 2: Jadwal Mingguan */}
-        <WeeklySchedule schedules={allMasterSchedules} />
+          {/* Section 2: Jadwal Mingguan */}
+          <div className="bg-canvas border border-hairline rounded-3xl p-6 sm:p-8 shadow-xl shadow-neutral-100/50 dark:shadow-none">
+            <WeeklySchedule schedules={allMasterSchedules} />
+          </div>
 
-        {/* Section 3: Task Tracker */}
-        <TaskList tasks={allTasks} />
+          {/* Section 3: Task Tracker */}
+          <div className="bg-canvas border border-hairline rounded-3xl p-6 sm:p-8 shadow-xl shadow-neutral-100/50 dark:shadow-none">
+            <TaskList tasks={allTasks} />
+          </div>
 
-        {/* Section 4: Repositori Materi */}
-        <MaterialArchive materials={allMaterials} />
+          {/* Section 4: Repositori Materi */}
+          <div className="bg-canvas border border-hairline rounded-3xl p-6 sm:p-8 shadow-xl shadow-neutral-100/50 dark:shadow-none">
+            <MaterialArchive materials={allMaterials} />
+          </div>
+        </div>
       </main>
 
-      <footer className="max-w-2xl mx-auto px-4 mt-16 pt-6 border-t border-hairline text-center text-xs text-ink-muted space-y-1">
-        <p>Portal Kelas SI-A • Dikembangkan untuk efisiensi perkuliahan bersama.</p>
-        <p className="font-mono text-[10px]">Zero AI Slop • Cal.com Design Tokens • LibSQL</p>
+      <footer className="max-w-4xl mx-auto px-4 mt-20 pt-8 border-t border-hairline text-center text-xs text-ink-muted space-y-2">
+        <p className="font-semibold text-ink">Portal Kelas SI-A • Angkatan 2025</p>
+        <p className="text-[11px]">Dikembangkan untuk efisiensi perkuliahan bersama • Zero AI Slop • LibSQL</p>
       </footer>
     </div>
   );
