@@ -35,7 +35,7 @@ export function AdminTaskManager({ tasks, adminEmail, subjects }: AdminTaskManag
           title,
           subject,
           category,
-          deadline,
+          deadline: deadline.replace('T', ' '),
           description: description.trim() || undefined,
           submission_url: submissionUrl.trim() || undefined,
         },
@@ -124,9 +124,8 @@ export function AdminTaskManager({ tasks, adminEmail, subjects }: AdminTaskManag
             <div>
               <label className="block text-ink-muted mb-1 font-medium">Batas Waktu (Deadline)</label>
               <input
-                type="text"
+                type="datetime-local"
                 required
-                placeholder="YYYY-MM-DD HH:mm (misal: 2026-11-20 23:59)"
                 value={deadline}
                 onChange={(e) => setDeadline(e.target.value)}
                 className="w-full bg-canvas border border-hairline rounded-md px-3 py-2 text-ink"

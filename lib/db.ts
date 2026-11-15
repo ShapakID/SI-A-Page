@@ -15,6 +15,7 @@ export function getDbClient(overrideUrl?: string): Client {
 
   const defaultUrl = 'file:local.db';
   const url = process.env.TURSO_DATABASE_URL || defaultUrl;
+  const authToken = process.env.TURSO_AUTH_TOKEN;
 
   globalClient = createClient({
     url,
