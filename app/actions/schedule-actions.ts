@@ -119,3 +119,45 @@ export async function deleteSchedule(
 
   return { success: true };
 }
+
+export async function bulkCreateSchedules(
+  items: MasterScheduleInput[],
+  session?: any,
+  dbOverride?: Client
+) {
+  assertAdminSession(session);
+  const db = dbOverride || getDbClient();
+
+  for (const data of items) {
+    await db.execute({
+      sql: `INSERT INTO schedules (day_of_week, subject, lecturer, start_time, end_time, room, semester)
+            VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      args: [
+        data.day_of_week,
+        data.subject.trim(),
+        data.lecturer.trim(),
+        data.start_time,
+        data.end_time,
+        data.room.trim(),
+        data.semester,
+      ],
+    });
+  }
+
+  return { success: true, count: items.length };
+}
+
+export async function resetAllData(
+  session?: any,
+  dbOverride?: Client
+) {
+  assertAdminSession(session);
+  const db = dbOverride || getDbClient();
+
+  await db.execute('DELETE FROM schedule_overrides');
+  await db.execute('DELETE FROM schedules');
+  await db.execute('DELETE FROM tasks');
+  await db.execute('DELETE FROM materials');
+
+  return { success: true };
+}

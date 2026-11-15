@@ -1,12 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { BookOpen, Calendar, CheckSquare, FolderDown } from 'lucide-react';
+import { BookOpen, Calendar, CheckSquare, FolderDown, Terminal } from 'lucide-react';
 import type { Schedule, ScheduleOverride, Task, Material } from '@/lib/types';
 import { AdminCourseManager } from './AdminCourseManager';
 import { AdminScheduleManager } from './AdminScheduleManager';
 import { AdminTaskManager } from './AdminTaskManager';
 import { AdminMaterialManager } from './AdminMaterialManager';
+import { AdminBulkTools } from './AdminBulkTools';
 
 interface AdminDashboardTabsProps {
   schedules: Schedule[];
@@ -27,7 +28,7 @@ export function AdminDashboardTabs({
   activeSemester,
   subjects,
 }: AdminDashboardTabsProps) {
-  const [activeTab, setActiveTab] = useState<'courses' | 'schedules' | 'tasks' | 'materials'>('courses');
+  const [activeTab, setActiveTab] = useState<'courses' | 'schedules' | 'tasks' | 'materials' | 'bulk'>('courses');
 
   const tabs = [
     {
@@ -53,6 +54,12 @@ export function AdminDashboardTabs({
       label: '4. Berkas & Drive',
       icon: FolderDown,
       count: materials.length,
+    },
+    {
+      id: 'bulk',
+      label: '5. Bulk & Reset',
+      icon: Terminal,
+      count: '⚡',
     },
   ] as const;
 
@@ -149,6 +156,18 @@ export function AdminDashboardTabs({
               </p>
             </div>
             <AdminMaterialManager materials={materials} adminEmail={adminEmail} />
+          </div>
+        )}
+
+        {activeTab === 'bulk' && (
+          <div className="space-y-6 animate-in fade-in duration-200">
+            <div className="border-b border-hairline pb-4">
+              <h2 className="text-base font-bold text-ink">Admin Bulk Tools & Database Reset</h2>
+              <p className="text-xs text-ink-muted mt-1">
+                Import jadwal secara massal lewat JSON atau reset total database portal.
+              </p>
+            </div>
+            <AdminBulkTools adminEmail={adminEmail} activeSemester={activeSemester} />
           </div>
         )}
       </div>
